@@ -1,4 +1,4 @@
-module github.com/3ddiamantes/asimov-tool-cli
+module asimov-tool-cli
 
 go 1.14
 

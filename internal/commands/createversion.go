@@ -7,7 +7,7 @@ import (
 	"github.com/urfave/cli"
 )
 
-func createVersion(c *cli.Context) {
+func CreateVersion(c *cli.Context) {
 	fmt.Printf("Creating version")
 	time.Sleep(time.Second * 1)
 	fmt.Printf(".")

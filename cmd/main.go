@@ -6,6 +6,8 @@ import (
 	"os"
 	"sort"
 
+	"asimov-tool-cli/internal/commands"
+
 	"github.com/urfave/cli"
 )
 
@@ -16,7 +18,7 @@ func main() {
 				Name:    "create-version",
 				Aliases: []string{"cv"},
 				Usage:   "Creates a version",
-				Action:  commands.createVersion,
+				Action:  commands.CreateVersion,
 			},
 		},
 		Name:  "asimov",
