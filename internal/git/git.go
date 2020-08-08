@@ -14,6 +14,6 @@ func CommitsPending() bool {
 		fmt.Println(err)
 		return true
 	}
-	fmt.Printf("Out:\n %v\n", out.String() == "")
-	return true
+
+	return out.String() != ""
 }
