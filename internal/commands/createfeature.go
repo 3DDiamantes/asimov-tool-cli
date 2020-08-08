@@ -25,7 +25,9 @@ func CreateFeature(c *cli.Context) {
 		return
 	}
 
-	// git status -> should return nothing to commit
+	featureBranch = fmt.Sprintf("feature/%s", featureBranch)
+
+	// git status -> must return nothing to commit
 	fmt.Printf("Checking for pending changes to commit...")
 	if git.CommitsPending() {
 		fmt.Printf("FAIL\nYou have pending changes to commit.\n")
@@ -35,16 +37,36 @@ func CreateFeature(c *cli.Context) {
 
 	// git checkout develop
 	fmt.Printf("Checking out to develop...")
+	if err := git.Checkout("develop"); err != nil {
+		fmt.Printf("FAIL\nError: %v\n", err)
+		return
+	}
 	fmt.Printf("OK\n")
+
 	// git pull
 	fmt.Printf("Downloading remote changes...")
+	if err := git.Pull(); err != nil {
+		fmt.Printf("FAIL\nError: %v\n", err)
+		return
+	}
 	fmt.Printf("OK\n")
+
 	// git checkout -b feature/featureName
 	fmt.Printf("Creating the new branch and checking out...")
+	if err := git.CreateBranch(featureBranch); err != nil {
+		fmt.Printf("FAIL\nError: %v\n", err)
+		return
+	}
 	fmt.Printf("OK\n")
+
 	// git push -u origin feature/featureName
 	fmt.Printf("Uploading the local branch...")
+	if err := git.PushNewBranch(featureBranch); err != nil {
+		fmt.Printf("FAIL\nError: %v\n", err)
+		return
+	}
 	fmt.Printf("OK\n")
+	gb
 	// API call to Github
 	fmt.Printf("Creating Pull Request...")
 	fmt.Printf("OK\n")
