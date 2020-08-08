@@ -66,7 +66,7 @@ func CreateFeature(c *cli.Context) {
 		return
 	}
 	fmt.Printf("OK\n")
-	gb
+
 	// API call to Github
 	fmt.Printf("Creating Pull Request...")
 	fmt.Printf("OK\n")
