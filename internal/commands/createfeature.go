@@ -26,21 +26,28 @@ func CreateFeature(c *cli.Context) {
 	}
 
 	// git status -> should return nothing to commit
-	fmt.Println("Checking for pending changes to commit...")
+	fmt.Printf("Checking for pending changes to commit...")
 	if git.CommitsPending() {
-		fmt.Println("You have pending changes to commit.")
+		fmt.Printf("FAIL\nYou have pending changes to commit.\n")
 		return
 	}
+	fmt.Printf("OK\n")
+
 	// git checkout develop
-	fmt.Println("Checking out to develop...")
+	fmt.Printf("Checking out to develop...")
+	fmt.Printf("OK\n")
 	// git pull
-	fmt.Println("Downloading remote changes...")
+	fmt.Printf("Downloading remote changes...")
+	fmt.Printf("OK\n")
 	// git checkout -b feature/featureName
-	fmt.Println("Creating the new branch and checking out...")
+	fmt.Printf("Creating the new branch and checking out...")
+	fmt.Printf("OK\n")
 	// git push -u origin feature/featureName
-	fmt.Println("Uploading the local branch...")
+	fmt.Printf("Uploading the local branch...")
+	fmt.Printf("OK\n")
 	// API call to Github
-	fmt.Println("Creating Pull Request...")
+	fmt.Printf("Creating Pull Request...")
+	fmt.Printf("OK\n")
 
 	fmt.Printf("\nFeature '%s' created correctly. Happy coding!\n", featureBranch)
 }
