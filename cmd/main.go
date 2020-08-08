@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"sort"
@@ -20,13 +19,16 @@ func main() {
 				Usage:   "Creates a version",
 				Action:  commands.CreateVersion,
 			},
+			{
+				Name:      "new-feature",
+				Aliases:   []string{"nf"},
+				Usage:     "Create a new feature branch",
+				ArgsUsage: "featureName",
+				Action:    commands.CreateFeature,
+			},
 		},
 		Name:  "asimov",
 		Usage: "CLI tool for manage builds, tests, deploys and other stuff related to development.",
-		Action: func(c *cli.Context) error {
-			fmt.Println(c.Args())
-			return nil
-		},
 	}
 
 	sort.Sort(cli.CommandsByName(app.Commands))
