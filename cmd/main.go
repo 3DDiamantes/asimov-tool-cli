@@ -6,6 +6,7 @@ import (
 	"sort"
 
 	"asimov-tool-cli/internal/commands"
+	"asimov-tool-cli/internal/env"
 
 	"github.com/urfave/cli"
 )
@@ -14,17 +15,17 @@ func main() {
 	app := &cli.App{
 		Commands: []cli.Command{
 			{
-				Name:    "create-version",
-				Aliases: []string{"cv"},
-				Usage:   "Creates a version",
-				Action:  commands.CreateVersion,
-			},
-			{
 				Name:      "new-feature",
 				Aliases:   []string{"nf"},
 				Usage:     "Create a new feature branch",
 				ArgsUsage: "featureName",
 				Action:    commands.CreateFeature,
+			},
+			{
+				Name:    "token-get",
+				Aliases: []string{"tg"},
+				Usage:   "Get your personal token for Github API",
+				Action:  env.GetTokenCmd,
 			},
 		},
 		Name:  "asimov",
