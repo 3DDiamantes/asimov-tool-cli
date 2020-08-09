@@ -90,7 +90,7 @@ func CreatePR(baseBranch string, headBranch string) error {
 	if err != nil {
 		return err
 	}
-	if resp.StatusCode() == 201 {
+	if resp.StatusCode() != 201 {
 		return errors.New("Pull request creation failed. Please create it manually.")
 	}
 	return nil

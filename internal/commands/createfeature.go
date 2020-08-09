@@ -68,12 +68,12 @@ func CreateFeature(c *cli.Context) {
 	fmt.Printf("OK\n")
 
 	// API call to Github
-	fmt.Printf("Creating Pull Request...")
+	/*fmt.Printf("Creating Pull Request...")
 	if err := git.CreatePR("develop", featureBranch); err != nil {
 		fmt.Printf("FAIL\n%v\n", err)
 		return
 	}
-	fmt.Printf("OK\n")
+	fmt.Printf("OK\n")*/
 
 	fmt.Printf("\nFeature '%s' created correctly. Happy coding!\n", featureBranch)
 }
