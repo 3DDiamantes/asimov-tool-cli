@@ -1,21 +1,13 @@
 package git
 
 import (
-	"asimov-tool-cli/internal/env"
+	"asimov-tool-cli/internal/repository"
 	"bytes"
 	"errors"
 	"fmt"
 	"os/exec"
 	"regexp"
-
-	"github.com/go-resty/resty/v2"
 )
-
-type createPR struct {
-	Title string `json:"title"`
-	Head  string `json:"head"`
-	Base  string `json:"base"`
-}
 
 func CommitsPending() (bool, error) {
 	cmd := exec.Command("git", "status", "--porcelain")
@@ -61,31 +53,18 @@ func PushNewBranch(branch string) error {
 }
 
 func CreatePR(baseBranch string, headBranch string) error {
-	token, err := env.GetToken()
-	if err != nil {
-		return err
-	}
-
 	owner, repo, err := getOwnerAndRepository()
 	if err != nil {
 		return err
 	}
 
-	// Create a Resty Client
-	client := resty.New()
+	r := repository.NewGithub(owner, repo)
 
-	prBody := createPR{
-		Title: fmt.Sprintf("%s->%s", headBranch, baseBranch),
-		Head:  headBranch,
-		Base:  baseBranch,
-	}
-
-	resp, err := client.R().
-		SetHeader("Accept", "application/vnd.github.v3+json").
-		SetAuthScheme("token").
-		SetAuthToken(token).
-		SetBody(prBody).
-		Post(fmt.Sprintf("https://api.github.com/repos/%s/%s/pulls", owner, repo))
+	resp, err := r.CreatePR(
+		baseBranch,
+		headBranch,
+		fmt.Sprintf("%s->%s", headBranch, baseBranch),
+	)
 
 	if err != nil {
 		return err
