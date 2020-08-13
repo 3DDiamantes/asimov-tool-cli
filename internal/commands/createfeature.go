@@ -14,7 +14,7 @@ const illegalCharacters string = " !\"#$%&'()*+,./:;<=>?@[\\]^_`{|}~\n\r"
 
 func CreateFeature(c *cli.Context) {
 	if !c.Args().Present() {
-		fmt.Println("Features's name must be specified.")
+		fmt.Println("Feature's name must be specified.")
 		return
 	}
 
@@ -67,13 +67,5 @@ func CreateFeature(c *cli.Context) {
 	}
 	fmt.Printf("OK\n")
 
-	// API call to Github
-	/*fmt.Printf("Creating Pull Request...")
-	if err := git.CreatePR("develop", featureBranch); err != nil {
-		fmt.Printf("FAIL\n%v\n", err)
-		return
-	}
-	fmt.Printf("OK\n")*/
-
-	fmt.Printf("\nFeature '%s' created correctly. Happy coding!\n", featureBranch)
+	fmt.Printf("\nFeature '%s' created correctly. Please create a PR in GitHub.\nHappy coding!\n", featureBranch)
 }
