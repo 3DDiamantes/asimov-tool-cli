@@ -19,7 +19,7 @@ func main() {
 				Aliases:   []string{"nf"},
 				Usage:     "Create a new feature branch",
 				ArgsUsage: "featureName",
-				Action:    commands.CreateFeature,
+				Action:    commands.NewFeature,
 			},
 			{
 				Name:    "token-get",

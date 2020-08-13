@@ -12,7 +12,7 @@ import (
 
 const illegalCharacters string = " !\"#$%&'()*+,./:;<=>?@[\\]^_`{|}~\n\r"
 
-func CreateFeature(c *cli.Context) {
+func NewFeature(c *cli.Context) {
 	if !c.Args().Present() {
 		fmt.Println("Feature's name must be specified.")
 		return
