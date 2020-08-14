@@ -26,6 +26,13 @@ func main() {
 				Usage:     "Create a new version of the proyect.",
 				ArgsUsage: "x.x.x",
 				Action:    commands.CreateVersion,
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:  "target",
+						Value: "current",
+						Usage: "OS and architecture for the build. If not set the current OS/Arch will be used.",
+					},
+				},
 			},
 			{
 				Name:    "token-get",

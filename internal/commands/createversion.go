@@ -29,6 +29,12 @@ func CreateVersion(c *cli.Context) {
 		return
 	}
 
+	target := c.String("target")
+	if !isValidTarget(target) {
+		fmt.Println("Target not valid.\nValid targets are: arm.")
+		return
+	}
+
 	featureName, err := getFeatureName()
 	if err != nil {
 		fmt.Println("Error getting the feature name.")
@@ -36,9 +42,8 @@ func CreateVersion(c *cli.Context) {
 	}
 
 	filename := version + "-" + featureName
-	fmt.Println("Creating version " + filename + "...")
 
-	if utils.FileExist("builds/" + filename) {
+	if utils.FileExist("builds/" + target + "/" + filename) {
 		fmt.Println("The version already exists.\nPlease specify a different version number.")
 		return
 	}
@@ -48,7 +53,7 @@ func CreateVersion(c *cli.Context) {
 	switch projectType {
 	case ProjectGo:
 		fmt.Println("Go project detected.")
-		err = createGoVersion(filename)
+		err = createGoVersion(filename, target)
 	case ProjectUnknown:
 		fmt.Println("Unknown project type.")
 		return
@@ -68,6 +73,13 @@ func isValidVersion(v string) bool {
 	results := re.FindString(v)
 
 	if results != "" {
+		return true
+	}
+	return false
+}
+
+func isValidTarget(target string) bool {
+	if target == "current" || target == "arm" {
 		return true
 	}
 	return false
@@ -95,11 +107,16 @@ func getFeatureName() (string, error) {
 	return results[1], nil
 }
 
-func createGoVersion(filename string) error {
-	os.Setenv("GOOS", "linux")
-	os.Setenv("GOARCH", "arm")
-	os.Setenv("GOARM", "7")
-	cmd := exec.Command("go", "build", "-o", "builds/"+filename, "cmd/main.go")
+func createGoVersion(filename string, target string) error {
+	fmt.Println("Creating version " + filename + " for " + target + "...")
+
+	if target == "arm" {
+		os.Setenv("GOOS", "linux")
+		os.Setenv("GOARCH", "arm")
+		os.Setenv("GOARM", "7")
+	}
+
+	cmd := exec.Command("go", "build", "-o", "builds/"+target+"/"+filename, "cmd/main.go")
 
 	if err := cmd.Run(); err != nil {
 		return err
