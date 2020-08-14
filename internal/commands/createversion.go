@@ -28,6 +28,15 @@ func CreateVersion(c *cli.Context) {
 		return
 	}
 
+	projectType := getProjectType()
+	switch projectType {
+	case ProjectGo:
+		fmt.Println("Go project detected.")
+	case ProjectUnknown:
+		fmt.Println("Unknown project type.")
+		return
+	}
+
 	fmt.Printf("Creating version %s\n", version)
 }
 
