@@ -3,6 +3,7 @@ package commands
 import (
 	"asimov-tool-cli/internal/utils"
 	"bytes"
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -37,7 +38,7 @@ func CreateVersion(c *cli.Context) {
 
 	featureName, err := getFeatureName()
 	if err != nil {
-		fmt.Println("Error getting the feature name.")
+		fmt.Println(err)
 		return
 	}
 
@@ -103,6 +104,9 @@ func getFeatureName() (string, error) {
 
 	re := regexp.MustCompile(`feature/(.+)`)
 	results := re.FindStringSubmatch(out.String())
+	if len(results) < 1 {
+		return "", errors.New("Versions can only be created from feature's branch")
+	}
 
 	return results[1], nil
 }
