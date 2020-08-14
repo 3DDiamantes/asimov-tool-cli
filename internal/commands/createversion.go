@@ -4,6 +4,7 @@ import (
 	"asimov-tool-cli/internal/utils"
 	"bytes"
 	"fmt"
+	"os"
 	"os/exec"
 	"regexp"
 
@@ -95,9 +96,9 @@ func getFeatureName() (string, error) {
 }
 
 func createGoVersion(filename string) error {
-	//os.Setenv("GOOS", "linux")
-	//os.Setenv("GOARCH", "arm")
-	//os.Setenv("GOARM", "7")
+	os.Setenv("GOOS", "linux")
+	os.Setenv("GOARCH", "arm")
+	os.Setenv("GOARM", "7")
 	cmd := exec.Command("go", "build", "-o", "builds/"+filename, "cmd/main.go")
 
 	if err := cmd.Run(); err != nil {
