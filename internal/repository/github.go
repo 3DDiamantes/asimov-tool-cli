@@ -17,24 +17,24 @@ type createPRBody struct {
 	Base  string `json:"base"`
 }
 
-type Github interface {
-	CreatePR(base string, head string, title string)
+type GithubRepository interface {
+	CreatePR(title string, headBranch string, baseBranch string) (*resty.Response, error)
 }
 
-type github struct {
+type githubRepository struct {
 	Repository string
 	Owner      string
 	authToken  string
 	client     *resty.Client
 }
 
-func NewGithub(owner string, repository string) *github {
+func NewGithubRepository(owner string, repository string) GithubRepository {
 	token, err := env.GetToken()
 	if err != nil {
 		panic("Error getting GitHub token")
 	}
 
-	return &github{
+	return &githubRepository{
 		Repository: repository,
 		Owner:      owner,
 		authToken:  token,
@@ -42,7 +42,7 @@ func NewGithub(owner string, repository string) *github {
 	}
 }
 
-func (r *github) CreatePR(title string, headBranch string, baseBranch string) (*resty.Response, error) {
+func (r *githubRepository) CreatePR(title string, headBranch string, baseBranch string) (*resty.Response, error) {
 	url := fmt.Sprintf("/repos/%s/%s/pulls", r.Owner, r.Repository)
 
 	body := createPRBody{

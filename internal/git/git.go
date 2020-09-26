@@ -58,7 +58,7 @@ func CreatePR(baseBranch string, headBranch string) error {
 		return err
 	}
 
-	r := repository.NewGithub(owner, repo)
+	r := repository.NewGithubRepository(owner, repo)
 
 	resp, err := r.CreatePR(
 		baseBranch,

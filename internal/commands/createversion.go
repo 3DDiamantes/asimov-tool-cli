@@ -36,19 +36,29 @@ func CreateVersion(c *cli.Context) {
 		return
 	}
 
-	featureName, err := getFeatureName()
-	if err != nil {
-		fmt.Println(err)
+	filename := c.String("name")
+
+	if !isValidVersionName(filename) {
+		fmt.Println("Version name not valid.\nValid name should be lowercase letters only.")
 		return
 	}
 
-	filename := version + "-" + featureName
+	if filename == "" {
+		featureName, err := getFeatureName()
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		filename = featureName + "-" + version
+	}
 
 	if utils.FileExist("builds/" + target + "/" + filename) {
 		fmt.Println("The version already exists.\nPlease specify a different version number.")
 		return
 	}
 
+	var err error
 	projectType := getProjectType()
 
 	switch projectType {
@@ -81,6 +91,12 @@ func isValidVersion(v string) bool {
 
 func isValidTarget(target string) bool {
 	if target == "current" || target == "arm" {
+		return true
+	}
+	return false
+}
+func isValidVersionName(versionName string) bool {
+	if utils.IsLower(versionName) {
 		return true
 	}
 	return false

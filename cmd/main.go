@@ -30,7 +30,12 @@ func main() {
 					&cli.StringFlag{
 						Name:  "target",
 						Value: "current",
-						Usage: "OS and architecture for the build. If not set the current OS/Arch will be used.",
+						Usage: "OS and architecture for the build. If not set the current OS/Arch will be used. Supported targets: arm.",
+					},
+					&cli.StringFlag{
+						Name:  "name",
+						Value: "",
+						Usage: "Name of the version. If not set the name will be <feature>-x.x.x.",
 					},
 				},
 			},
