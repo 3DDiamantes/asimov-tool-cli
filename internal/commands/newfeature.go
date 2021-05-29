@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"asimov-tool-cli/internal/utils"
 	"fmt"
 
 	"strings"
@@ -13,6 +14,7 @@ import (
 const illegalCharacters string = " !\"#$%&'()*+,./:;<=>?@[\\]^_`{|}~\n\r"
 
 func NewFeature(c *cli.Context) {
+	// Validate arguments
 	if !c.Args().Present() {
 		fmt.Println("Feature's name must be specified.")
 		return
@@ -28,12 +30,17 @@ func NewFeature(c *cli.Context) {
 	featureBranch = fmt.Sprintf("feature/%s", featureBranch)
 
 	// git status -> must return nothing to commit
-	fmt.Printf("Checking for pending changes to commit...")
-	if pending, err := git.CommitsPending(); err != nil || pending {
-		fmt.Printf("FAIL\nYou have pending changes to commit.\n")
+	pending, err := git.CommitsPending()
+	if err != nil {
+		utils.PrintError("Failed to check for pending changes to commit", err)
 		return
 	}
-	fmt.Printf("OK\n")
+	if pending {
+		utils.PrintFail("You have pending changes to commit")
+		return
+	}
+
+	utils.PrintOK("No pending changes to commit")
 
 	// git checkout develop
 	fmt.Printf("Checking out to develop...")

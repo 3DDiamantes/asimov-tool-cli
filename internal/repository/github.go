@@ -7,10 +7,6 @@ import (
 	"github.com/go-resty/resty/v2"
 )
 
-const (
-	githubApiUrl = "https://api.github.com"
-)
-
 type createPRBody struct {
 	Title string `json:"title"`
 	Head  string `json:"head"`

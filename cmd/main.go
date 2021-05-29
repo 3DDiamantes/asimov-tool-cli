@@ -21,21 +21,20 @@ func main() {
 				Action:    commands.NewFeature,
 			},
 			{
-				Name:      "create-version",
-				Aliases:   []string{"cv"},
-				Usage:     "Create a new version of the proyect.",
-				ArgsUsage: "x.x.x",
-				Action:    commands.CreateVersion,
+				Name:      "build",
+				Usage:     "Create a build of the project",
+				ArgsUsage: "",
+				Action:    commands.Build,
 				Flags: []cli.Flag{
 					&cli.StringFlag{
 						Name:  "target",
-						Value: "current",
-						Usage: "OS and architecture for the build. If not set the current OS/Arch will be used. Supported targets: arm.",
+						Value: "",
+						Usage: "OS and architecture for the build. If not set the current OS/Arch will be used. Supported targets: arm, linux, mac, win.",
 					},
 					&cli.StringFlag{
 						Name:  "name",
 						Value: "",
-						Usage: "Name of the version. If not set the name will be <feature>-x.x.x.",
+						Usage: "Name of the build. If not set the name will be project-branch-M.m.p",
 					},
 				},
 			},
