@@ -6,7 +6,6 @@ import (
 	"sort"
 
 	"asimov-tool-cli/internal/commands"
-	"asimov-tool-cli/internal/env"
 
 	"github.com/urfave/cli"
 )
@@ -22,10 +21,28 @@ func main() {
 				Action:    commands.NewFeature,
 			},
 			{
+				Name:      "build",
+				Usage:     "Create a build of the project",
+				ArgsUsage: "",
+				Action:    commands.Build,
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:  "target",
+						Value: "",
+						Usage: "OS and architecture for the build. If not set the current OS/Arch will be used. Supported targets: arm, linux, mac, win.",
+					},
+					&cli.StringFlag{
+						Name:  "name",
+						Value: "",
+						Usage: "Name of the build. If not set the name will be project-branch-M.m.p",
+					},
+				},
+			},
+			{
 				Name:    "token-get",
 				Aliases: []string{"tg"},
 				Usage:   "Get your personal token for Github API",
-				Action:  env.GetTokenCmd,
+				Action:  commands.GetToken,
 			},
 		},
 		Name:  "asimov",

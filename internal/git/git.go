@@ -19,7 +19,6 @@ func CommitsPending() (bool, error) {
 
 	return out.String() != "", nil
 }
-
 func Checkout(branch string) error {
 	cmd := exec.Command("git", "checkout", branch)
 	if err := cmd.Run(); err != nil {
@@ -27,7 +26,6 @@ func Checkout(branch string) error {
 	}
 	return nil
 }
-
 func Pull() error {
 	cmd := exec.Command("git", "pull")
 	if err := cmd.Run(); err != nil {
@@ -35,7 +33,6 @@ func Pull() error {
 	}
 	return nil
 }
-
 func CreateBranch(branch string) error {
 	cmd := exec.Command("git", "checkout", "-b", branch)
 	if err := cmd.Run(); err != nil {
@@ -43,7 +40,6 @@ func CreateBranch(branch string) error {
 	}
 	return nil
 }
-
 func PushNewBranch(branch string) error {
 	cmd := exec.Command("git", "push", "-u", "origin", branch)
 	if err := cmd.Run(); err != nil {
@@ -51,14 +47,13 @@ func PushNewBranch(branch string) error {
 	}
 	return nil
 }
-
 func CreatePR(baseBranch string, headBranch string) error {
 	owner, repo, err := getOwnerAndRepository()
 	if err != nil {
 		return err
 	}
 
-	r := repository.NewGithub(owner, repo)
+	r := repository.NewGithubRepository(owner, repo)
 
 	resp, err := r.CreatePR(
 		baseBranch,
@@ -74,7 +69,6 @@ func CreatePR(baseBranch string, headBranch string) error {
 	}
 	return nil
 }
-
 func getOwnerAndRepository() (string, string, error) {
 	cmd := exec.Command("git", "config", "--get", "remote.origin.url")
 	var out bytes.Buffer
@@ -87,4 +81,17 @@ func getOwnerAndRepository() (string, string, error) {
 	results := re.FindStringSubmatch(out.String())
 
 	return results[1], results[2], nil
+}
+func GetProject() (string, error) {
+	cmd := exec.Command("git", "config", "--get", "remote.origin.url")
+	var out bytes.Buffer
+	cmd.Stdout = &out
+	if err := cmd.Run(); err != nil {
+		return "", err
+	}
+
+	re := regexp.MustCompile(`:.+/(.+)\.git`)
+	results := re.FindStringSubmatch(out.String())
+
+	return results[0], nil
 }
